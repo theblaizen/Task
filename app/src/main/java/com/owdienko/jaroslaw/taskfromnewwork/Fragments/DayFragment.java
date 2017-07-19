@@ -11,8 +11,11 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.owdienko.jaroslaw.taskfromnewwork.Adapters.ViewPagerAdapter;
+import com.owdienko.jaroslaw.taskfromnewwork.Constants;
 import com.owdienko.jaroslaw.taskfromnewwork.CustomUI.NonSwipeViewPager;
+import com.owdienko.jaroslaw.taskfromnewwork.Interfaces.PassDataEntity;
 import com.owdienko.jaroslaw.taskfromnewwork.Interfaces.TabPosition;
+import com.owdienko.jaroslaw.taskfromnewwork.Model.DataEntity;
 import com.owdienko.jaroslaw.taskfromnewwork.R;
 
 import java.util.ArrayList;
@@ -24,13 +27,15 @@ import java.util.List;
  * - jaroslaw - 2017 -
  */
 
-public class DayFragment extends Fragment implements TabPosition {
+public class DayFragment extends Fragment implements TabPosition, PassDataEntity {
 
+    List<InnerTabFragment> fragments;
+    private int tabPosition = Constants.TAB_POSITION;
     private TabLayout tabLayout;
     private NonSwipeViewPager viewPager;
     private Context context;
     private FragmentActivity activity;
-    List<InnerTabFragment> fragments;
+    private DataEntity entity;
 
     public static DayFragment newInstance() {
         DayFragment myFragment = new DayFragment();
@@ -52,7 +57,23 @@ public class DayFragment extends Fragment implements TabPosition {
         View rootView = inflater.inflate(R.layout.day_fragment, container, false);
 
         setupTabLayout(rootView);
+        tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+            @Override
+            public void onTabSelected(TabLayout.Tab tab) {
+                tabPosition = tab.getPosition();
+                Constants.TAB_POSITION = tabPosition;
+            }
 
+            @Override
+            public void onTabUnselected(TabLayout.Tab tab) {
+
+            }
+
+            @Override
+            public void onTabReselected(TabLayout.Tab tab) {
+
+            }
+        });
         return rootView;
     }
 
@@ -78,10 +99,10 @@ public class DayFragment extends Fragment implements TabPosition {
             fragments.add(InnerTabFragment.newInstance());
         }
 
-        fragments.get(0).passData(new String[]{"Log","Log","Log","Log","Log","Log"});
-        fragments.get(1).passData(new String[]{"General","General","General","General","General","General"});
-        fragments.get(2).passData(new String[]{"Docs","Docs","Docs","Docs","Docs","Docs"});
-        fragments.get(3).passData(new String[]{"DVIR","DVIR","DVIR","DVIR","DVIR","DVIR"});
+        fragments.get(0).passData(entity.getLog());
+        fragments.get(1).passData(entity.getGeneral());
+        fragments.get(2).passData(entity.getDocs());
+        fragments.get(3).passData(entity.getDvir());
 
         adapter.addFragment(fragments.get(0), "Log");
         adapter.addFragment(fragments.get(1), "General");
@@ -90,15 +111,24 @@ public class DayFragment extends Fragment implements TabPosition {
 
         viewPager.setPagingEnabled(false);
         viewPager.setAdapter(adapter);
-
     }
 
     public int getTabReportsPosition() {
-        return tabLayout.getSelectedTabPosition();
+        return tabPosition;
     }
 
     @Override
     public int getTabPosition() {
         return getTabReportsPosition();
+    }
+
+    @Override
+    public void setTabPosition(int position) {
+        viewPager.setCurrentItem(position);
+    }
+
+    @Override
+    public void passEntity(DataEntity entity) {
+        this.entity = entity;
     }
 }

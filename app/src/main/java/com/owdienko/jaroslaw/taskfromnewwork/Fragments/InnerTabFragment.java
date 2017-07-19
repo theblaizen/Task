@@ -46,7 +46,6 @@ public class InnerTabFragment extends Fragment implements PassDataIntoInnerTabs 
     }
 
     private void setupReportsList(View view) {
-        //todo solve null problem!
         if (mockUpData != null){
             adapter = new SimpleRVAdapter(mockUpData);
         }

@@ -48,5 +48,9 @@ public class NonSwipeViewPager extends ViewPager {
         return super.getCurrentItem();
     }
 
+    @Override
+    public void setCurrentItem(int item) {
+        super.setCurrentItem(item);
+    }
 }
 

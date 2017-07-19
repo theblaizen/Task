@@ -14,6 +14,7 @@ import android.widget.TextView;
 import com.owdienko.jaroslaw.taskfromnewwork.Adapters.ViewPagerAdapter;
 import com.owdienko.jaroslaw.taskfromnewwork.CustomUI.NonSwipeViewPager;
 import com.owdienko.jaroslaw.taskfromnewwork.Fragments.DayFragment;
+import com.owdienko.jaroslaw.taskfromnewwork.Model.DataEntity;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -28,6 +29,7 @@ public class MainActivity extends AppCompatActivity {
     private NonSwipeViewPager viewPager;
     private ViewPagerAdapter adapter;
     private int positionOfTheDay = 0;
+    private int currentTabPosition = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,15 +41,10 @@ public class MainActivity extends AppCompatActivity {
 
         viewPager.setCurrentItem(positionOfTheDay);
 
-        viewPager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+        tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
-            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-
-            }
-
-            @Override
-            public void onPageSelected(int position) {
-                TabLayout.Tab tab = tabLayout.getTabAt(viewPager.getCurrentItem());
+            public void onTabSelected(TabLayout.Tab tab) {
+                tab = tabLayout.getTabAt(viewPager.getCurrentItem());
 
                 if (tab != null) {
                     tvToolBarTitle.setText(tab.getText());
@@ -55,10 +52,19 @@ public class MainActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onPageScrollStateChanged(int state) {
+            public void onTabUnselected(TabLayout.Tab tab) {
+                DayFragment fragment = (DayFragment) adapter.getItem(viewPager.getCurrentItem());
+                currentTabPosition = Constants.TAB_POSITION;
+                fragment.setTabPosition(currentTabPosition);
+                adapter.replaceFragment(fragment, currentTabPosition);
+                fragment = null;
+            }
 
+            @Override
+            public void onTabReselected(TabLayout.Tab tab) {
             }
         });
+
     }
 
     private void setupOuterTabLayout() {
@@ -72,12 +78,15 @@ public class MainActivity extends AppCompatActivity {
     private void setupViewPager(ViewPager viewPager) {
         adapter = new ViewPagerAdapter(getSupportFragmentManager());
         List<String> days = setupTabsCount();
-
+        DataEntity entity = new DataEntity();
         for (String day : days) {
-            adapter.addFragment(DayFragment.newInstance(), day);
+            DayFragment dayFragment = DayFragment.newInstance();
+            dayFragment.passEntity(entity);
+            adapter.addFragment(dayFragment, day);
         }
 
         viewPager.setAdapter(adapter);
+        viewPager.setOffscreenPageLimit(7);
     }
 
     private void setupToolBar() {
@@ -115,21 +124,21 @@ public class MainActivity extends AppCompatActivity {
         MenuInflater inflater = getMenuInflater();
 
         DayFragment fragment = (DayFragment) adapter.getItem(viewPager.getCurrentItem());
-        int currentTab = fragment.getTabPosition();
+        currentTabPosition = fragment.getTabPosition();
         fragment = null;
 
         menu.clear();
         inflater.inflate(R.menu.menu, menu);
 
-        if (currentTab == 0) {
+        if (currentTabPosition == 0) {
             menu.removeItem(R.id.menu_add);
             menu.removeItem(R.id.menu_load);
             menu.removeItem(R.id.menu_dvir);
-        } else if (currentTab == 1) {
+        } else if (currentTabPosition == 1) {
             menu.removeItem(R.id.menu_load);
             menu.removeItem(R.id.menu_send);
             menu.removeItem(R.id.menu_dvir);
-        } else if (currentTab == 2) {
+        } else if (currentTabPosition == 2) {
             menu.removeItem(R.id.menu_add);
             menu.removeItem(R.id.menu_send);
             menu.removeItem(R.id.menu_dvir);

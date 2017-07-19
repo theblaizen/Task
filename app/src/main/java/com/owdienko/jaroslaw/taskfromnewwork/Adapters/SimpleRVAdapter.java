@@ -21,7 +21,6 @@ public class SimpleRVAdapter extends RecyclerView.Adapter<SimpleRVAdapter.Simple
 
     @Override
     public SimpleViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        // create a new view
         View view = new TextView(parent.getContext());
         SimpleViewHolder viewHolder = new SimpleViewHolder(view);
         return viewHolder;
@@ -44,9 +43,5 @@ public class SimpleRVAdapter extends RecyclerView.Adapter<SimpleRVAdapter.Simple
     @Override
     public int getItemCount() {
         return dataSource.length;
-    }
-
-    public void setDataSource(String[] dataSource) {
-        this.dataSource = dataSource;
     }
 }

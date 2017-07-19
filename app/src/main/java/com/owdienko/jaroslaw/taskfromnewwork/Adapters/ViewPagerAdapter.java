@@ -44,4 +44,8 @@ public class ViewPagerAdapter extends FragmentStatePagerAdapter {
         mFragmentTitleList.add(title);
     }
 
+    public void replaceFragment(Fragment fragment, int position) {
+        mFragmentList.set(position, fragment);
+    }
+
 }
