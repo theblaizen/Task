@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">TaskFromNewWork</string>
+    <string name="send_log">Send</string>
+    <string name="add_general">Add</string>
+    <string name="load_docs">Load</string>
+    <string name="toolbar_title_text">ЧТ|ЛИП. 6</string>
+</resources>
