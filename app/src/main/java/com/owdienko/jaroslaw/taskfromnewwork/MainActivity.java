@@ -49,15 +49,15 @@ public class MainActivity extends AppCompatActivity {
                 if (tab != null) {
                     tvToolBarTitle.setText(tab.getText());
                 }
-            }
-
-            @Override
-            public void onTabUnselected(TabLayout.Tab tab) {
                 DayFragment fragment = (DayFragment) adapter.getItem(viewPager.getCurrentItem());
                 currentTabPosition = Constants.TAB_POSITION;
                 fragment.setTabPosition(currentTabPosition);
                 adapter.replaceFragment(fragment, currentTabPosition);
                 fragment = null;
+            }
+
+            @Override
+            public void onTabUnselected(TabLayout.Tab tab) {
             }
 
             @Override
@@ -108,7 +108,7 @@ public class MainActivity extends AppCompatActivity {
         if (tab != null) {
             tab.select();
             tvToolBarTitle.setText(tab.getText());
-            
+
             DayFragment fragment = (DayFragment) adapter.getItem(viewPager.getCurrentItem());
             currentTabPosition = Constants.TAB_POSITION;
             fragment.setTabPosition(currentTabPosition);

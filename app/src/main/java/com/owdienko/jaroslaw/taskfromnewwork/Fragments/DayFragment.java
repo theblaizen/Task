@@ -111,6 +111,7 @@ public class DayFragment extends Fragment implements TabPosition, PassDataEntity
 
         viewPager.setPagingEnabled(false);
         viewPager.setAdapter(adapter);
+        viewPager.setOffscreenPageLimit(4);
     }
 
     public int getTabReportsPosition() {
