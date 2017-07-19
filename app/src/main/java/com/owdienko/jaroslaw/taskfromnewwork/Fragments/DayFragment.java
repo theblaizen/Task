@@ -35,7 +35,6 @@ public class DayFragment extends Fragment implements TabPosition {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.day_fragment, container, false);
-
         setupTabLayout(rootView);
 
         return rootView;
