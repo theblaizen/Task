@@ -108,6 +108,12 @@ public class MainActivity extends AppCompatActivity {
         if (tab != null) {
             tab.select();
             tvToolBarTitle.setText(tab.getText());
+            
+            DayFragment fragment = (DayFragment) adapter.getItem(viewPager.getCurrentItem());
+            currentTabPosition = Constants.TAB_POSITION;
+            fragment.setTabPosition(currentTabPosition);
+            adapter.replaceFragment(fragment, currentTabPosition);
+            fragment = null;
         }
     }
 
@@ -116,6 +122,12 @@ public class MainActivity extends AppCompatActivity {
         if (tab != null) {
             tab.select();
             tvToolBarTitle.setText(tab.getText());
+
+            DayFragment fragment = (DayFragment) adapter.getItem(viewPager.getCurrentItem());
+            currentTabPosition = Constants.TAB_POSITION;
+            fragment.setTabPosition(currentTabPosition);
+            adapter.replaceFragment(fragment, currentTabPosition);
+            fragment = null;
         }
     }
 
