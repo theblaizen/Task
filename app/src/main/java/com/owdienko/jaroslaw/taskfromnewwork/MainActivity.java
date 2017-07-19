@@ -74,7 +74,7 @@ public class MainActivity extends AppCompatActivity {
         List<String> days = setupTabsCount();
 
         for (String day : days) {
-            adapter.addFragment(new DayFragment(), day);
+            adapter.addFragment(DayFragment.newInstance(), day);
         }
 
         viewPager.setAdapter(adapter);

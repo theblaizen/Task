@@ -45,4 +45,8 @@ public class SimpleRVAdapter extends RecyclerView.Adapter<SimpleRVAdapter.Simple
     public int getItemCount() {
         return dataSource.length;
     }
+
+    public void setDataSource(String[] dataSource) {
+        this.dataSource = dataSource;
+    }
 }

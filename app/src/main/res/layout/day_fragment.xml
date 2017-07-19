@@ -8,9 +8,8 @@
 
     <android.support.design.widget.TabLayout
         android:id="@+id/reports_tablayout"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="0dp"
         app:tabTextColor="#808080"
         app:tabIndicatorColor="@color/colorPrimary"
         app:tabSelectedTextColor="@color/colorPrimary"
@@ -18,8 +17,7 @@
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:tabGravity="fill"
-        app:tabMode="fixed"
-        tools:layout_editor_absoluteY="0dp" />
+        app:tabMode="fixed" />
 
     <com.owdienko.jaroslaw.taskfromnewwork.CustomUI.NonSwipeViewPager
         android:id="@+id/reports_viewpager"
