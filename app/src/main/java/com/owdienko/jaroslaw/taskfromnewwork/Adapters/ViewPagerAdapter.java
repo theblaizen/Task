@@ -5,6 +5,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBar;
+import android.view.ViewGroup;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -41,6 +42,10 @@ public class ViewPagerAdapter extends FragmentStatePagerAdapter {
     public void addFragment(Fragment fragment, String title) {
         mFragmentList.add(fragment);
         mFragmentTitleList.add(title);
+    }
+
+    public void replaceFragment(Fragment fragment, int position) {
+        mFragmentList.set(position, fragment);
     }
 
 }

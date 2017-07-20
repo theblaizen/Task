@@ -9,11 +9,15 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
+import android.widget.ToggleButton;
 
 import com.owdienko.jaroslaw.taskfromnewwork.Adapters.ViewPagerAdapter;
 import com.owdienko.jaroslaw.taskfromnewwork.CustomUI.NonSwipeViewPager;
 import com.owdienko.jaroslaw.taskfromnewwork.Fragments.DayFragment;
+import com.owdienko.jaroslaw.taskfromnewwork.Interfaces.DayFragmentPresenter;
+import com.owdienko.jaroslaw.taskfromnewwork.Model.DataEntity;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -28,6 +32,14 @@ public class MainActivity extends AppCompatActivity {
     private NonSwipeViewPager viewPager;
     private ViewPagerAdapter adapter;
     private int positionOfTheDay = 0;
+    private Button prevButton;
+    private Button nextButton;
+    private int STATE = 1;
+
+    private ToggleButton logToggleButton;
+    private ToggleButton generalToggleButton;
+    private ToggleButton docsToggleButton;
+    private ToggleButton dvirToggleButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,29 +48,118 @@ public class MainActivity extends AppCompatActivity {
 
         setupToolBar();
         setupOuterTabLayout();
+        setupButtons();
 
         viewPager.setCurrentItem(positionOfTheDay);
 
-        viewPager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+        tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
-            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-
-            }
-
-            @Override
-            public void onPageSelected(int position) {
-                TabLayout.Tab tab = tabLayout.getTabAt(viewPager.getCurrentItem());
+            public void onTabSelected(TabLayout.Tab tab) {
+                tab = tabLayout.getTabAt(viewPager.getCurrentItem());
 
                 if (tab != null) {
                     tvToolBarTitle.setText(tab.getText());
                 }
+                for (int i = 0; i < adapter.getCount(); i++) {
+                    DayFragment fragment = (DayFragment) adapter.getItem(i);
+//                    fragment.setTabPosition(Constants.TAB_POSITION);
+                    fragment = null;
+                }
+//                DayFragment fragment = (DayFragment) adapter.getItem(viewPager.getCurrentItem());
+//                currentTabPosition = Constants.TAB_POSITION;
+//                fragment.setTabPosition(currentTabPosition);
+//                fragment = null;
             }
 
             @Override
-            public void onPageScrollStateChanged(int state) {
+            public void onTabUnselected(TabLayout.Tab tab) {
+                if (viewPager.getCurrentItem() == adapter.getCount() - 1) {
+                    nextButton.setEnabled(false);
+                } else {
+                    nextButton.setEnabled(true);
+                }
 
+                if (viewPager.getCurrentItem() == 0) {
+                    prevButton.setEnabled(false);
+                } else {
+                    prevButton.setEnabled(true);
+                }
+            }
+
+            @Override
+            public void onTabReselected(TabLayout.Tab tab) {
             }
         });
+
+    }
+
+    private void setupButtons() {
+        prevButton = (Button) findViewById(R.id.prev_btn);
+        nextButton = (Button) findViewById(R.id.next_btn);
+
+        logToggleButton = (ToggleButton) findViewById(R.id.log_toggle);
+        generalToggleButton = (ToggleButton) findViewById(R.id.general_toggle);
+        docsToggleButton = (ToggleButton) findViewById(R.id.docs_toggle);
+        dvirToggleButton = (ToggleButton) findViewById(R.id.dvir_toggle);
+
+        logToggleButton.setChecked(true);
+    }
+
+    public void toggleTabs(View view) {
+        switch (view.getId()) {
+            case R.id.log_toggle:
+                logToggleButton.setChecked(true);
+                generalToggleButton.setChecked(false);
+                docsToggleButton.setChecked(false);
+                dvirToggleButton.setChecked(false);
+                STATE = 1;
+                invalidateOptionsMenu();
+                Constants.TAB_POSITION = 0;
+                for (int i = 0; i < adapter.getCount(); i++) {
+                    DayFragmentPresenter fragment = (DayFragment) adapter.getItem(i);
+                    fragment.changeDataInTabs();
+                }
+                break;
+            case R.id.general_toggle:
+                logToggleButton.setChecked(false);
+                generalToggleButton.setChecked(true);
+                docsToggleButton.setChecked(false);
+                dvirToggleButton.setChecked(false);
+                STATE = 1;
+                invalidateOptionsMenu();
+                Constants.TAB_POSITION = 1;
+                for (int i = 0; i < adapter.getCount(); i++) {
+                    DayFragmentPresenter fragment = (DayFragment) adapter.getItem(i);
+                    fragment.changeDataInTabs();
+                }
+                break;
+            case R.id.docs_toggle:
+                logToggleButton.setChecked(false);
+                generalToggleButton.setChecked(false);
+                docsToggleButton.setChecked(true);
+                dvirToggleButton.setChecked(false);
+                STATE = 1;
+                invalidateOptionsMenu();
+                Constants.TAB_POSITION = 2;
+                for (int i = 0; i < adapter.getCount(); i++) {
+                    DayFragmentPresenter fragment = (DayFragment) adapter.getItem(i);
+                    fragment.changeDataInTabs();
+                }
+                break;
+            case R.id.dvir_toggle:
+                logToggleButton.setChecked(false);
+                generalToggleButton.setChecked(false);
+                docsToggleButton.setChecked(false);
+                dvirToggleButton.setChecked(true);
+                STATE = -1;
+                invalidateOptionsMenu();
+                Constants.TAB_POSITION = 3;
+                for (int i = 0; i < adapter.getCount(); i++) {
+                    DayFragmentPresenter fragment = (DayFragment) adapter.getItem(i);
+                    fragment.changeDataInTabs();
+                }
+                break;
+        }
     }
 
     private void setupOuterTabLayout() {
@@ -72,12 +173,15 @@ public class MainActivity extends AppCompatActivity {
     private void setupViewPager(ViewPager viewPager) {
         adapter = new ViewPagerAdapter(getSupportFragmentManager());
         List<String> days = setupTabsCount();
-
+        DataEntity entity = new DataEntity();
         for (String day : days) {
-            adapter.addFragment(new DayFragment(), day);
+            DayFragment dayFragment = DayFragment.newInstance();
+            dayFragment.passEntity(entity);
+            adapter.addFragment(dayFragment, day);
         }
 
         viewPager.setAdapter(adapter);
+        viewPager.setOffscreenPageLimit(7);
     }
 
     private void setupToolBar() {
@@ -95,51 +199,75 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void previousPosition(View view) {
-        TabLayout.Tab tab = tabLayout.getTabAt(viewPager.getCurrentItem() - 1);
-        if (tab != null) {
-            tab.select();
-            tvToolBarTitle.setText(tab.getText());
+        if (viewPager.getCurrentItem() == 0) {
+            prevButton.setEnabled(false);
+        } else {
+            prevButton.setEnabled(true);
+            TabLayout.Tab tab = tabLayout.getTabAt(viewPager.getCurrentItem() - 1);
+            if (tab != null) {
+                tab.select();
+                tvToolBarTitle.setText(tab.getText());
+            }
+        }
+
+        if (viewPager.getCurrentItem() == 0) {
+            prevButton.setEnabled(false);
+        }
+
+        if (viewPager.getCurrentItem() != adapter.getCount() - 1) {
+            nextButton.setEnabled(true);
         }
     }
 
     public void nextPosition(View view) {
-        TabLayout.Tab tab = tabLayout.getTabAt(viewPager.getCurrentItem() + 1);
-        if (tab != null) {
-            tab.select();
-            tvToolBarTitle.setText(tab.getText());
+        if (viewPager.getCurrentItem() == adapter.getCount() - 1) {
+            nextButton.setEnabled(false);
+        } else {
+            nextButton.setEnabled(true);
+            TabLayout.Tab tab = tabLayout.getTabAt(viewPager.getCurrentItem() + 1);
+            if (tab != null) {
+                tab.select();
+                tvToolBarTitle.setText(tab.getText());
+            }
+        }
+
+        if (viewPager.getCurrentItem() == adapter.getCount() - 1) {
+            nextButton.setEnabled(false);
+        }
+        if (viewPager.getCurrentItem() != 0) {
+            prevButton.setEnabled(true);
         }
     }
 
     @Override
-    public boolean onPrepareOptionsMenu(Menu menu) {
+    public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
-
-        DayFragment fragment = (DayFragment) adapter.getItem(viewPager.getCurrentItem());
-        int currentTab = fragment.getTabPosition();
-        fragment = null;
 
         menu.clear();
         inflater.inflate(R.menu.menu, menu);
 
-        if (currentTab == 0) {
-            menu.removeItem(R.id.menu_add);
-            menu.removeItem(R.id.menu_load);
-            menu.removeItem(R.id.menu_dvir);
-        } else if (currentTab == 1) {
-            menu.removeItem(R.id.menu_load);
-            menu.removeItem(R.id.menu_send);
-            menu.removeItem(R.id.menu_dvir);
-        } else if (currentTab == 2) {
-            menu.removeItem(R.id.menu_add);
-            menu.removeItem(R.id.menu_send);
-            menu.removeItem(R.id.menu_dvir);
+        if (STATE == 1) {
+            for (int i = 0; i < menu.size(); i++)
+                menu.getItem(i).setVisible(true);
+            if (logToggleButton.isChecked()) {
+                menu.removeItem(R.id.menu_add);
+                menu.removeItem(R.id.menu_load);
+                menu.removeItem(R.id.menu_dvir);
+            } else if (generalToggleButton.isChecked()) {
+                menu.removeItem(R.id.menu_load);
+                menu.removeItem(R.id.menu_send);
+                menu.removeItem(R.id.menu_dvir);
+            } else if (docsToggleButton.isChecked()) {
+                menu.removeItem(R.id.menu_add);
+                menu.removeItem(R.id.menu_send);
+                menu.removeItem(R.id.menu_dvir);
+            }
         } else {
-            menu.removeItem(R.id.menu_add);
-            menu.removeItem(R.id.menu_send);
-            menu.removeItem(R.id.menu_load);
+            for (int i = 0; i < menu.size(); i++)
+                menu.getItem(i).setVisible(false);
         }
 
-        return super.onPrepareOptionsMenu(menu);
+        return super.onCreateOptionsMenu(menu);
     }
 
     @Override
