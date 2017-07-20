@@ -7,5 +7,5 @@ package com.owdienko.jaroslaw.taskfromnewwork.Interfaces;
 
 public interface TabPosition {
     int getTabPosition();
-    void setTabPosition(int position);
+    void sendData(int position);
 }

@@ -1,6 +1,5 @@
 package com.owdienko.jaroslaw.taskfromnewwork.Adapters;
 
-import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -15,7 +14,7 @@ import android.widget.TextView;
 public class SimpleRVAdapter extends RecyclerView.Adapter<SimpleRVAdapter.SimpleViewHolder> {
     private String[] dataSource;
 
-    public SimpleRVAdapter(String[] dataArgs){
+    public SimpleRVAdapter(String[] dataArgs) {
         dataSource = dataArgs;
     }
 
@@ -24,14 +23,6 @@ public class SimpleRVAdapter extends RecyclerView.Adapter<SimpleRVAdapter.Simple
         View view = new TextView(parent.getContext());
         SimpleViewHolder viewHolder = new SimpleViewHolder(view);
         return viewHolder;
-    }
-
-    public static class SimpleViewHolder extends RecyclerView.ViewHolder{
-        public TextView textView;
-        public SimpleViewHolder(View itemView) {
-            super(itemView);
-            textView = (TextView) itemView;
-        }
     }
 
     @Override
@@ -43,5 +34,18 @@ public class SimpleRVAdapter extends RecyclerView.Adapter<SimpleRVAdapter.Simple
     @Override
     public int getItemCount() {
         return dataSource.length;
+    }
+
+    public void swapArray(String[] dataArgs) {
+        dataSource = dataArgs;
+    }
+
+    public static class SimpleViewHolder extends RecyclerView.ViewHolder {
+        public TextView textView;
+
+        public SimpleViewHolder(View itemView) {
+            super(itemView);
+            textView = (TextView) itemView;
+        }
     }
 }

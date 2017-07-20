@@ -5,29 +5,13 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="#fff">
-
-    <android.support.design.widget.TabLayout
-        android:id="@+id/reports_tablayout"
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/reports_list"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        app:tabTextColor="#808080"
-        app:tabIndicatorColor="@color/colorPrimary"
-        app:tabSelectedTextColor="@color/colorPrimary"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:tabGravity="fill"
-        app:tabMode="fixed" />
-
-    <com.owdienko.jaroslaw.taskfromnewwork.CustomUI.NonSwipeViewPager
-        android:id="@+id/reports_viewpager"
-        android:layout_width="0dp"
-        android:clickable="false"
         android:layout_height="0dp"
-        android:layout_marginTop="8dp"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/reports_tablayout" />
-
+        app:layout_constraintTop_toTopOf="parent" />
 </android.support.constraint.ConstraintLayout>

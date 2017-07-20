@@ -12,22 +12,22 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:background="?attr/colorPrimary"
-        android:elevation="4dp"
         android:minHeight="?attr/actionBarSize"
         android:theme="?attr/actionBarTheme"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        android:layout_marginTop="-2dp"
-        app:layout_constraintHorizontal_bias="1.0">
+        app:theme="@style/ToolbarStyle">
 
         <TextView
             android:id="@+id/toolbar_title"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:gravity="center"
             android:foregroundGravity="center"
+            android:gravity="center"
             android:text=""
+            android:textColor="#fff"
             android:textSize="18sp" />
     </android.support.v7.widget.Toolbar>
 
@@ -46,10 +46,9 @@
             android:layout_width="match_parent"
             android:layout_height="35dp"
             android:layout_gravity="left"
-            android:layout_marginBottom="6dp"
             android:layout_marginRight="2dp"
             android:layout_weight="0.5"
-            android:background="#cecece"
+            android:background="@color/colorChange"
             android:drawableLeft="@drawable/ic_keyboard_arrow_left_black_24dp"
             android:drawableTint="#808080"
             android:onClick="previousPosition"
@@ -65,10 +64,9 @@
             android:layout_width="match_parent"
             android:layout_height="35dp"
             android:layout_gravity="right"
-            android:layout_marginBottom="6dp"
             android:layout_marginLeft="2dp"
             android:layout_weight="0.5"
-            android:background="#cecece"
+            android:background="@color/colorChange"
             android:drawableRight="@drawable/ic_keyboard_arrow_right_black_24dp"
             android:drawableTint="#808080"
             android:onClick="nextPosition"
@@ -85,26 +83,100 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:visibility="gone"
-        app:tabGravity="fill"
-        app:tabMode="scrollable"
-        android:layout_marginLeft="8dp"
         app:layout_constraintLeft_toLeftOf="parent"
-        android:layout_marginRight="8dp"
         app:layout_constraintRight_toRightOf="parent"
-        android:layout_marginTop="0dp"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout" />
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout"
+        app:tabGravity="fill"
+        app:tabMode="scrollable" />
+
+
+    <LinearLayout
+        android:id="@+id/linearLayout2"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:weightSum="12"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/reports_tablayout">
+
+
+        <ToggleButton
+            android:id="@+id/log_toggle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="-5dip"
+            android:layout_marginRight="-5dip"
+            android:layout_marginTop="-5dip"
+            android:layout_weight="3"
+            android:onClick="toggleTabs"
+            android:padding="0dp"
+            android:stateListAnimator="@null"
+            android:text="ToggleButton"
+            android:textAllCaps="false"
+            android:textOff=" Log "
+            android:textOn=" Log "
+            app:theme="@style/ToggleButtonStyle" />
+
+        <ToggleButton
+            android:id="@+id/general_toggle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="-5dip"
+            android:layout_marginRight="-5dip"
+            android:layout_marginTop="-5dip"
+            android:layout_weight="3"
+            android:onClick="toggleTabs"
+            android:padding="0dp"
+            android:stateListAnimator="@null"
+            android:text="ToggleButton"
+            android:textAllCaps="false"
+            android:textOff=" General "
+            android:textOn=" General "
+            app:theme="@style/ToggleButtonStyle" />
+
+        <ToggleButton
+            android:id="@+id/docs_toggle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="-5dip"
+            android:layout_marginRight="-5dip"
+            android:layout_marginTop="-5dip"
+            android:layout_weight="3"
+            android:onClick="toggleTabs"
+            android:padding="0dp"
+            android:stateListAnimator="@null"
+            android:text="ToggleButton"
+            android:textAllCaps="false"
+            android:textOff=" Docs "
+            android:textOn=" Docs "
+            app:theme="@style/ToggleButtonStyle" />
+
+        <ToggleButton
+            android:id="@+id/dvir_toggle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="-5dip"
+            android:layout_marginRight="-5dip"
+            android:layout_marginTop="-5dip"
+            android:layout_weight="3"
+            android:onClick="toggleTabs"
+            android:padding="0dp"
+            android:stateListAnimator="@null"
+            android:text="ToggleButton"
+            android:textAllCaps="false"
+            android:textOff=" DVIR "
+            android:textOn=" DVIR "
+            app:theme="@style/ToggleButtonStyle" />
+    </LinearLayout>
 
     <com.owdienko.jaroslaw.taskfromnewwork.CustomUI.NonSwipeViewPager
         android:id="@+id/viewpager"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginTop="0dp"
-        app:layout_constraintTop_toBottomOf="@+id/reports_tablayout"
-        android:layout_marginRight="0dp"
-        app:layout_constraintRight_toRightOf="parent"
-        android:layout_marginLeft="0dp"
-        app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
-        android:layout_marginBottom="0dp" />
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout2" />
 
 </android.support.constraint.ConstraintLayout>
